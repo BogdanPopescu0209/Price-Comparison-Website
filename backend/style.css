@@ -1,0 +1,121 @@
+body{
+    background-image: url(/images/wallpaper.jpg);
+    background-size: cover;
+}
+
+.logo{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    cursor: pointer;
+}
+
+.search{
+    margin-left: 120px;
+}
+
+.searchBtn{
+    color:white;
+    background-color: rgb(180, 30, 30);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+ul{
+    float: left;
+}
+
+.output{
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+    padding: 5px;
+    text-align: center;
+    min-width: 400px;
+    min-height: 300px;
+    max-width: 400px;
+    max-height: 400px;
+    margin-left: 55px;
+}
+
+.select{
+    background-color: rgb(180, 30, 30);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.urlImage{
+    width: 100px;
+    height: 100px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.instanceImg{
+    width: 300px;
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Instance{
+    text-align: center;
+    color: rgb(180, 30, 30);
+    font-weight: 15px;
+}
+
+h1, h2{
+    text-align: center;
+    color: rgb(180, 30, 30);
+}
+
+.homePage{
+    width: 180px;
+    height: 180px;
+}
+
+.outputInstance{
+    background-color: white;
+    margin-left: 400px;
+    margin-right:400px;
+}
+
+.priceInstance{
+    float: right;
+    margin-right: 50px;
+    margin-top: 40px;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+}
+
+.outputComparison{
+    background-color: rgb(180, 30, 30);
+    margin-left: 400px;
+    margin-right:400px;
+    margin-bottom: 10px;
+}
+
+nav {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.outputGrid{
+    color:white;
+    background-color: rgb(180, 30, 30);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.outputGridAllign{
+    margin-left: 95px;
+}

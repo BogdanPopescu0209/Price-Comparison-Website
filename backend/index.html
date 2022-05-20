@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINDMYBIKE</title>
+
+    <!--Vue.js library-->
+    <script src="https://unpkg.com/vue"></script>
+
+    <!--Boostrap library-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!--Font awesome library-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <!-- Axios library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!--Link to external file css-->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="container-fluid">
+
+            <!--First row-->
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg"></div>
+
+                    <div class="col-lg">
+
+                        <header>
+
+                            <div>
+                                <!--Output logo-->
+                                <a v-on:click='reloadPage'>
+                                    <img class="logo" src="/images/logo1.png" alt="logo.png">
+                                </a>
+
+                                <!--If check input not empty execute search function-->
+                                <input v-model="searchInput" class="search" type="text" placeholder="Search...">
+                                <button class="searchBtn" v-on:click="search(0)">
+                                    <span class="fas fa-search"></span> Search
+                                </button>
+                            </div>
+
+                        </header>
+
+                    </div>
+
+                    <div class="col-lg"></div>
+                </div>
+            </div>
+
+            <br>
+
+            <!--Second row-->
+            <div class="container-fluid">
+
+                <div class="col-lg"></div>
+
+                <div class="col-lg">
+
+                    <main>
+
+                        <br>
+
+                        <div v-if="showProducts">
+
+                            <div class="outputGridAllign">
+                                <!--Change how many bikes per page-->
+                                <button class="outputGrid" :disabled='isDisabled'>Output:</button>
+                                <button class="outputGrid" v-on:click="output6()">6</button>
+                                <button class="outputGrid" v-on:click="output12()">12</button>
+                                <button class="outputGrid" v-on:click="output24()">24</button>
+                            </div>
+
+                            <br>
+
+                            <!--Output bikes-->
+                            <ul v-for="product in bikeModels.data">
+
+                                <div class="output">
+
+                                    <img class="homePage" v-bind:src="product.image_url" alt="logo.png">
+                                    <p>{{product.description}}</p>
+                                    <button class="select" v-on:click="instance(product)">Check Bike Details</button>
+
+                                </div>
+
+                            </ul>
+
+                            <!--Pagination-->
+                            <nav aria-label="Page navigation example" v-if="bikeModels.count > 0">
+                                <ul class="pagination">
+
+                                    <div v-for="item in (Math.round(bikeModels.count / numItems))">
+
+                                        <li class="page-item"><a class="page-link" href="#"
+                                                v-on:click="search(offsetArray[item - 1])">{{item}}</a>
+                                        </li>
+
+                                    </div>
+
+                                </ul>
+                            </nav>
+
+                        </div>
+
+                        <!--Output bike instance-->
+                        <div v-else v-for="product in bikeInstance">
+
+                            <div class="outputInstance">
+
+                                <img class="instanceImg" v-bind:src="product.image_url" alt="logo.png">
+
+                                <br>
+                                <p class="Instance">{{product.description}}</p>
+                                <p class="Instance">Color : {{product.color}}</p>
+                                <p class="Instance">Size : {{product.size}}</p>
+                                <br>
+
+                                <h1>Prices: </h1>
+
+                            </div>
+
+                            <div>
+
+                                <!--Output bike comparison-->
+                                <div v-if="showComparison" v-for="product in bikeComparison">
+
+                                    <!--If product.website_url includes halfors output comparison-->
+                                    <div v-if="(product.website_url).includes('https://www.halfords.com')"
+                                        class="outputComparison">
+
+                                        <p class="priceInstance">£{{product.price}}</p>
+
+                                        <a v-bind:href="product.website_url" target="_blank">
+                                            <img class="urlImage" src="/images/halfords.jpeg">
+                                        </a>
+                                    </div>
+
+                                    <!--If product.website_url includes tredz output comparison-->
+                                    <div v-if="(product.website_url).includes('https://www.tredz.co.uk')"
+                                        class="outputComparison">
+
+                                        <p class="priceInstance">£{{product.price}}</p>
+
+                                        <a v-bind:href="product.website_url" target="_blank">
+                                            <img class="urlImage" src="/images/tredz.jpeg">
+                                        </a>
+                                    </div>
+
+                                    <!--If product.website_url includes evanscycles output comparison-->
+                                    <div v-if="(product.website_url).includes('https://www.evanscycles.com')"
+                                        class="outputComparison">
+
+                                        <p class="priceInstance">£{{product.price}}</p>
+
+                                        <a v-bind:href="product.website_url" target="_blank">
+                                            <img class="urlImage" src="/images/evans.jpeg">
+                                        </a>
+                                    </div>
+
+                                    <!--If product.website_url includes buyabike output comparison-->
+                                    <div v-if="(product.website_url).includes('https://www.buyabike.co.uk/')"
+                                        class="outputComparison">
+
+                                        <p class="priceInstance">£{{product.price}}</p>
+
+                                        <a v-bind:href="product.website_url" target="_blank">
+                                            <img class="urlImage" src="/images/buyabike.jpg">
+                                        </a>
+                                    </div>
+
+                                    <!--If product.website_url includes wiggle output comparison-->
+                                    <div v-if="(product.website_url).includes('https://www.wiggle.co.uk/')"
+                                         class="outputComparison">
+
+                                        <p class="priceInstance">£{{product.price}}</p>
+
+                                        <a v-bind:href="product.website_url" target="_blank">
+                                            <img class="urlImage" src="/images/wiggle.jpg">
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </main>
+
+                </div>
+
+                <div class="col-lg"></div>
+
+            </div>
+
+            <br>
+
+            <!--Third row-->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg"></div>
+
+                    <div class="col-lg"></div>
+
+                    <div class="col-lg"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        var vueapp = new Vue({
+            el: '#app',
+            data: {
+                bikeModels: [],
+                bikeInstance: [],
+                bikeComparison: [],
+                searchInput: '',
+                showProducts: false,
+                showComparison: false,
+                numItems: 6,
+                offset: 0,
+                offsetArray: [0],
+                currentCount: 0
+            },
+
+            methods: {
+
+                //Function that checks if searchInput is not empty and returns all bikes found
+                search: async function (offset) {
+
+                    if (this.searchInput.length != 0) {
+
+                        await axios
+                            .get('http://127.0.0.1:8080/api/search/' + this.searchInput + '?num_items=' + this.numItems + '&offset=' + offset)
+                            .then(res => this.bikeModels = res.data)
+                            .catch(err => console.error(err))
+
+                        this.showProducts = true;
+                        this.checkOffset();
+                    }
+                },
+
+                //Function that returns all bike instances found
+                instance: async function (product) {
+
+                    await axios
+                        .get('http://127.0.0.1:8080/api/bike-instance/' + product.id)
+                        .then(res => this.bikeInstance = res.data)
+                        .catch(err => console.error(err))
+
+                    this.showProducts = false;
+                    this.showComparison = true;
+                    this.compare();
+
+                },
+
+                //Function that returns all bike comparisons found
+                compare: async function () {
+
+                    bikeInstanceID = this.bikeInstance[0].id;
+
+                    axios
+                        .get('http://127.0.0.1:8080/api/bike-comparison/' + bikeInstanceID)
+                        .then(res => this.bikeComparison = res.data)
+                        .catch(err => console.error(err))
+                },
+
+                //Chnages bike output per page
+                output6: function () {
+                    this.search(6, 0);
+                    this.numItems = 6;
+                    this.checkOffset();
+                },
+
+                //Chnages bike output per page
+                output12: function () {
+                    this.search(12, 0);
+                    this.numItems = 12;
+                    this.checkOffset();
+                },
+
+                //Chnages bike output per page
+                output24: function () {
+                    this.search(24, 0);
+                    this.numItems = 24;
+                    this.checkOffset();
+                },
+
+                //Function that checks if number of bikes displayed per page changed and updates the offset
+                checkOffset: function () {
+
+                    if (this.numItems != this.offsetArray[1] || this.offsetArray.length === 1 || this.currentCount != this.bikeModels.count) {
+
+                        let offsetArray = [0];
+
+                        let pages = this.bikeModels.count / this.numItems;
+
+                        let offset = 0;
+
+                        for (let i = 1; i < pages; i++) {
+
+                            offset += this.numItems;
+
+                            offsetArray.push(offset);
+                        }
+
+                        let result = this.bikeModels.count - offset;
+
+                        this.offset = offset + result;
+
+                        this.offsetArray = offsetArray;
+
+                        this.currentCount = this.bikeModels.count
+                    }
+                },
+
+                reloadPage: function () {
+                    window.location.reload();
+                }
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>
